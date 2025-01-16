@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myapp/views/categories_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,24 +9,24 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+     initialRoute: '/home',
+      routes: {
+        '/home' : (context) => const MyHomePage(),
+        '/categories': (context) => const CategoriesPage(),
+      },
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -58,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     fixedSize: WidgetStateProperty.all<Size>(
                         Size(width * 0.35, height * 0.1))),
                 onPressed: () {
-                  // to navigate user to categories of quizez
+                  Navigator.pushNamed(context, '/categories');
                 },
                 child: Text(
                   'Play!',
