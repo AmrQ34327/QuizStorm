@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/views/categories_page.dart';
+import 'package:myapp/views/questions_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home' : (context) => const MyHomePage(),
         '/categories': (context) => const CategoriesPage(),
+        '/questions': (context) => QuestionsPage(),
       },
     );
   }
@@ -69,33 +71,23 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontSize: width * 0.09),
                 ))),
         Positioned(
-            top: height * 0.2,
-            left: width * 0.35,
-            child: const SizedBox(
-              width: 150,
-              height: 100,
-              child: Card(
-                color: Colors.white,
-                child: Text(
-                  'Daily Challenge',
-                  style: TextStyle(fontSize: 22),
-                ),
-              ),
+            top: height * 0.3,
+            left: width * 0.16,
+            child:  Text(
+              'QuizStorm',
+              style: GoogleFonts.kanit(
+                fontSize: width * 0.14,
+                 color: const Color.fromARGB(255, 238, 18, 84),
+                 fontWeight: FontWeight.w900,
+                 shadows: [
+                    Shadow(
+                      offset: const Offset(2.0, 2.0),
+                      blurRadius: 3.0,
+                      color: Colors.black.withOpacity(0.5),
+                 ),
+                 ]
+                 ),
             )),
-        Positioned(
-            top: height * 0.4,
-            left: width * 0.35,
-            child: const SizedBox(
-              width: 150,
-              height: 100,
-              child: Card(
-                color: Colors.white,
-                child: Text(
-                  'Random Category',
-                  style: TextStyle(fontSize: 25),
-                ),
-              ),
-            ))
       ],
     ));
   }

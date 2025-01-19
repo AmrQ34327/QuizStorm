@@ -56,12 +56,18 @@ class CategoriesPage extends StatelessWidget {
                   final category = categories[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: CategoryCard(
+                    child: GestureDetector(
+                      onTap: () {
+                        // opens questions page
+                        Navigator.pushNamed(context, '/questions', arguments: category.categoryIDNumber);
+                      },
+                      child: CategoryCard(
                         imagePath: category.imagePath,
                         categoryTitle: category.categoryTitle,
                         backgroundColor: category.backgroundCardColor,
                         categoryTitleColor: category.titleColor,
-                        ),
+                      ),
+                    ),
                   );
                 }),
               ),
@@ -90,7 +96,7 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Card(
-      color: backgroundColor?? Colors.white,
+      color: backgroundColor ?? Colors.white,
       elevation: 5,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0), // make it adaptive
@@ -107,7 +113,7 @@ class CategoryCard extends StatelessWidget {
             Text(
               categoryTitle,
               style: TextStyle(
-                color: categoryTitleColor?? Colors.brown,
+                color: categoryTitleColor ?? Colors.brown,
                 fontSize: width * 0.05,
                 fontWeight: FontWeight.bold,
               ),
