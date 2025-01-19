@@ -96,9 +96,10 @@ List<Category> categories = [
 // retuns 10 mutliple choice questions from the api
 Future<List> get10QuestionsData(String categoryID) async {
   final response = await http.get(Uri.parse(
-      'https://opentdb.com/api.php?amount=10&category=$categoryID&type=multiple'));
+      'https://opentdb.com/api.php?amount=10&category=$categoryID&type=multiple&encode=base64'));
   if (response.statusCode == 200) {
-    return jsonDecode(response.body);
+    var decodedResponse = jsonDecode(response.body);
+    return List<Map<String, dynamic>>.from(decodedResponse['results']);
   } else {
     throw Exception('Failed to load questions');
   }
