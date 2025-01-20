@@ -17,6 +17,7 @@ class CategoriesPage extends StatelessWidget {
               'assets/cool-background.png',
               fit: BoxFit.cover,
               width: double.infinity,
+              height: double.infinity,
             ),
             // Row of cateogies and a back button
             Positioned(
