@@ -67,7 +67,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
                               Navigator.pop(context);
                             },
                             icon: const Icon(Icons.arrow_back_ios,
-                                color: Colors.white))),
+                                color: Colors.white))
+                                ),
                     // questions count
                     Positioned(
                         top: height * 0.15,
@@ -112,6 +113,10 @@ class _QuestionsPageState extends State<QuestionsPage> {
                               isCorrectAnswer: answer == correctAnswer,
                               answerChosen: () {
                                 // if question count 11 push replacmnet named to score page
+                                 if (questionsCount == 10) {
+                                  Navigator.pushReplacementNamed(context, '/score',
+                                      arguments: [falseAnswers,finalScore]);
+                                }
                                 if (answer == correctAnswer) {
                                   // correct answer chosen
                                   finalScore++;
@@ -133,6 +138,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                     changeAnswers(questionsCount);
                                   });
                                 });
+                               
                               },
                             );
                           }),
@@ -214,7 +220,7 @@ class _AnswerCardState extends State<AnswerCard> {
           child: Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
-              color: backgroundchanged ? Colors.green : Colors.white,
+              color: backgroundchanged ? const Color.fromARGB(255, 12, 241, 20) : Colors.white,
               child: Center(
                 child: Text(widget.answer,
                     style:

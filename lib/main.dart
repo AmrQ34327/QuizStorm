@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/views/categories_page.dart';
 import 'package:myapp/views/questions_page.dart';
+import 'package:myapp/views/score_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/home' : (context) => const MyHomePage(),
         '/categories': (context) => const CategoriesPage(),
         '/questions': (context) => QuestionsPage(),
+        '/score': (context) => const ScorePage(),
       },
     );
   }
