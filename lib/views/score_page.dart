@@ -32,6 +32,7 @@ class _ScorePageState extends State<ScorePage> {
             'assets/cool-background3.png',
             fit: BoxFit.cover,
             width: double.infinity,
+            height: double.infinity,
           ),
           Positioned(
                         top: height * 0.03,

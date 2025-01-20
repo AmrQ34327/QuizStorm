@@ -52,114 +52,121 @@ class _QuestionsPageState extends State<QuestionsPage> {
     return SafeArea(
       child: Scaffold(
           body: dataLoaded
-              ? Stack(
-                  children: [
-                    Image.asset(
-                      'assets/cool-background2.png',
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    ),
-                    Positioned(
-                        top: height * 0.03,
-                        left: 5,
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(Icons.arrow_back_ios,
-                                color: Colors.white))
-                                ),
-                    // questions count
-                    Positioned(
-                        top: height * 0.15,
-                        left: width * 0.06,
-                        child: Text(
-                          'Question $questionsCount',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: width * 0.05),
-                        )),
-                    // the questions itself
-                    Positioned(
-                        top: height * 0.26,
-                        left: width * 0.06,
-                        child: SizedBox(
-                          width: width * 0.9,
-                          child: Text(
-                              utf8.decode(base64Decode(
-                                  questions[questionsCount - 1]['question'])),
-                              style: TextStyle(
-                                  fontSize: width * 0.055,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                        )),
-                    // answers
-                    Padding(
-                      padding: EdgeInsets.only(top: height * 0.51),
-                      child: ListView.builder(
-                          itemCount: 4,
-                          itemBuilder: (context, index) {
-                            for (var answer in answers) {
-                              answer = utf8.decode(base64Decode(answer));
-                            }
-                            var correctAnswer = utf8.decode(base64Decode(
-                                questions[questionsCount - 1]
-                                    ['correct_answer']));
-                            final answer =
-                                utf8.decode(base64Decode(answers[index]));
-                            return AnswerCard(
-                              answer: answer,
-                              isCorrectAnswer: answer == correctAnswer,
-                              answerChosen: () {
-                                // if question count 11 push replacmnet named to score page
-                                 if (questionsCount == 10) {
-                                  Navigator.pushReplacementNamed(context, '/score',
-                                      arguments: [falseAnswers,finalScore]);
-                                }
-                                if (answer == correctAnswer) {
-                                  // correct answer chosen
-                                  finalScore++;
-                                } else if (answer != correctAnswer) {
-                                  // answer is false
-                                  // add it to a list above called false answers
-                                  // list has question no. , question, chosen answer , correct answer
-                                  falseAnswers.add([
-                                    questionsCount.toString(),
-                                    utf8.decode(base64Decode(
-                                        questions[questionsCount - 1]
-                                            ['question'])),
-                                    answer,
-                                    correctAnswer
-                                  ]);
-                                }
-                                Future.delayed(const Duration(seconds: 2), () {
-                                  setState(() {
-                                    changeAnswers(questionsCount);
-                                  });
-                                });
-                               
-                              },
-                            );
-                          }),
-                    )
-                  ],
-                )
-              : Stack(
-                  children: [
-                    // background
-                    Image.asset(
-                      'assets/cool-background2.png',
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    ),
-                    const Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ? SafeArea(
+                child: Stack(
+                    children: [
+                      Image.asset(
+                        'assets/cool-background2.png',
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
                       ),
-                    )
-                  ],
-                )),
+                      Positioned(
+                          top: height * 0.03,
+                          left: 5,
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(Icons.arrow_back_ios,
+                                  color: Colors.white))
+                                  ),
+                      // questions count
+                      Positioned(
+                          top: height * 0.15,
+                          left: width * 0.06,
+                          child: Text(
+                            'Question $questionsCount',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * 0.05),
+                          )),
+                      // the questions itself
+                      Positioned(
+                          top: height * 0.26,
+                          left: width * 0.06,
+                          child: SizedBox(
+                            width: width * 0.9,
+                            child: Text(
+                                utf8.decode(base64Decode(
+                                    questions[questionsCount - 1]['question'])),
+                                style: TextStyle(
+                                    fontSize: width * 0.055,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                          )),
+                      // answers
+                      Padding(
+                        padding: EdgeInsets.only(top: height * 0.51),
+                        child: ListView.builder(
+                            itemCount: 4,
+                            itemBuilder: (context, index) {
+                              for (var answer in answers) {
+                                answer = utf8.decode(base64Decode(answer));
+                              }
+                              var correctAnswer = utf8.decode(base64Decode(
+                                  questions[questionsCount - 1]
+                                      ['correct_answer']));
+                              final answer =
+                                  utf8.decode(base64Decode(answers[index]));
+                              return AnswerCard(
+                                answer: answer,
+                                isCorrectAnswer: answer == correctAnswer,
+                                answerChosen: () {
+                                  // if question count 11 push replacmnet named to score page
+                                   if (questionsCount == 10) {
+                                    Navigator.pushReplacementNamed(context, '/score',
+                                        arguments: [falseAnswers,finalScore]);
+                                  }
+                                  if (answer == correctAnswer) {
+                                    // correct answer chosen
+                                    finalScore++;
+                                  } else if (answer != correctAnswer) {
+                                    // answer is false
+                                    // add it to a list above called false answers
+                                    // list has question no. , question, chosen answer , correct answer
+                                    falseAnswers.add([
+                                      questionsCount.toString(),
+                                      utf8.decode(base64Decode(
+                                          questions[questionsCount - 1]
+                                              ['question'])),
+                                      answer,
+                                      correctAnswer
+                                    ]);
+                                  }
+                                  if (answer == correctAnswer){
+                                    Future.delayed(const Duration(seconds: 2), () {
+                                    setState(() {
+                                      changeAnswers(questionsCount);
+                                    });
+                                  });
+                                  }
+                                 
+                                },
+                              );
+                            }),
+                      )
+                    ],
+                  ),
+              )
+              : SafeArea(
+                child: Stack(
+                    children: [
+                      // background
+                      Image.asset(
+                        'assets/cool-background2.png',
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ),
+                      const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
+              )),
     );
   }
 }
@@ -222,9 +229,12 @@ class _AnswerCardState extends State<AnswerCard> {
                   borderRadius: BorderRadius.circular(10)),
               color: backgroundchanged ? const Color.fromARGB(255, 12, 241, 20) : Colors.white,
               child: Center(
-                child: Text(widget.answer,
-                    style:
-                        const TextStyle(color: Color.fromARGB(255, 4, 14, 70))),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(widget.answer,
+                      style:
+                          const TextStyle(color: Color.fromARGB(255, 4, 14, 70))),
+                ),
               )),
         ),
       ),
