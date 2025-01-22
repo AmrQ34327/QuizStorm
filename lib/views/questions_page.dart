@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/model/model.dart';
 import 'dart:convert';
+import 'package:just_audio/just_audio.dart';
 
 class QuestionsPage extends StatefulWidget {
   QuestionsPage({super.key});
@@ -45,6 +46,13 @@ class _QuestionsPageState extends State<QuestionsPage> {
     questionsCount++;
   }
 
+  final player = AudioPlayer();
+
+  void playSound() async {
+    await player.setAsset('assets/correctanswer.mp3');
+    await player.play();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -53,7 +61,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
       child: Scaffold(
           body: dataLoaded
               ? SafeArea(
-                child: Stack(
+                  child: Stack(
                     children: [
                       Image.asset(
                         'assets/cool-background2.png',
@@ -69,8 +77,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                 Navigator.pop(context);
                               },
                               icon: const Icon(Icons.arrow_back_ios,
-                                  color: Colors.white))
-                                  ),
+                                  color: Colors.white))),
                       // questions count
                       Positioned(
                           top: height * 0.15,
@@ -114,16 +121,25 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                 answer: answer,
                                 isCorrectAnswer: answer == correctAnswer,
                                 answerChosen: () {
-                                  // if question count 11 push replacmnet named to score page
-                                   if (questionsCount == 10) {
-                                    Navigator.pushReplacementNamed(context, '/score',
-                                        arguments: [falseAnswers,finalScore]);
-                                  }
                                   if (answer == correctAnswer) {
                                     // correct answer chosen
+                                    playSound();
                                     finalScore++;
+                                    Future.delayed(const Duration(seconds: 2),
+                                        () {
+                                      setState(() {
+                                        if (questionsCount == 10) {
+                                          Navigator.pushReplacementNamed(
+                                              context, '/score', arguments: [
+                                            falseAnswers,
+                                            finalScore
+                                          ]);
+                                        } else {
+                                          changeAnswers(questionsCount);
+                                        }
+                                      });
+                                    });
                                   } else if (answer != correctAnswer) {
-                                    // answer is false
                                     // add it to a list above called false answers
                                     // list has question no. , question, chosen answer , correct answer
                                     falseAnswers.add([
@@ -131,27 +147,30 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                       utf8.decode(base64Decode(
                                           questions[questionsCount - 1]
                                               ['question'])),
-                                      answer,
                                       correctAnswer
                                     ]);
-                                  }
-                                  if (answer == correctAnswer){
-                                    Future.delayed(const Duration(seconds: 2), () {
                                     setState(() {
-                                      changeAnswers(questionsCount);
+                                      if (questionsCount == 10) {
+                                        Navigator.pushReplacementNamed(
+                                            context, '/score', arguments: [
+                                          falseAnswers,
+                                          finalScore
+                                        ]);
+                                      }
+                                      if (questionsCount < 10) {
+                                        changeAnswers(questionsCount);
+                                      }
                                     });
-                                  });
                                   }
-                                 
                                 },
                               );
                             }),
                       )
                     ],
                   ),
-              )
+                )
               : SafeArea(
-                child: Stack(
+                  child: Stack(
                     children: [
                       // background
                       Image.asset(
@@ -161,12 +180,22 @@ class _QuestionsPageState extends State<QuestionsPage> {
                       ),
                       const Center(
                         child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
-                      )
+                      ),
+                      Positioned(
+                          top: height * 0.03,
+                          left: 5,
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(Icons.arrow_back_ios,
+                                  color: Colors.white)))
                     ],
                   ),
-              )),
+                )),
     );
   }
 }
@@ -227,13 +256,15 @@ class _AnswerCardState extends State<AnswerCard> {
           child: Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
-              color: backgroundchanged ? const Color.fromARGB(255, 12, 241, 20) : Colors.white,
+              color: backgroundchanged
+                  ? const Color.fromARGB(255, 12, 241, 20)
+                  : Colors.white,
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(widget.answer,
-                      style:
-                          const TextStyle(color: Color.fromARGB(255, 4, 14, 70))),
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 4, 14, 70))),
                 ),
               )),
         ),
