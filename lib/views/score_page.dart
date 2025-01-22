@@ -35,15 +35,13 @@ class _ScorePageState extends State<ScorePage> {
             height: double.infinity,
           ),
           Positioned(
-                        top: height * 0.03,
-                        left: 5,
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(Icons.arrow_back_ios,
-                                color: Colors.white))
-                                ),
+              top: height * 0.03,
+              left: 5,
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white))),
           Positioned(
             top: height * 0.1,
             left: width * 0.35,
@@ -54,59 +52,81 @@ class _ScorePageState extends State<ScorePage> {
                   fontSize: width * 0.08,
                 )),
           ),
-          Positioned(
-            top: height * 0.3,
-            left: width * 0.2,
-            child: Text(
-              'Here are the questions you missed',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: width * 0.04,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: height * 0.4),
-            child: ListView.builder(
-              itemCount: falseAnswers.length,
-              itemBuilder: (context, index) {
-                final width = MediaQuery.of(context).size.width;
-                final falseAnswer = falseAnswers[index];
-                return Padding(
-                  padding:  EdgeInsets.all(width * 0.04),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // question number
-                      Text('Question ${falseAnswer[0]}', style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold
-                        
-                      ),),
-                      const SizedBox(height: 10),
-                      // question itself
-                      Text(falseAnswer[1], style: TextStyle(
-                        color: Colors.white,
-                        fontSize: width * 0.05,
-                      )),
-                      const SizedBox(height: 10),
-                      // the user's answer
-                      Text('Chosen Answer: ${falseAnswer[2]}', style: const TextStyle(
-                        color: Colors.white,
-
-                      )),
-                      const SizedBox(height: 5,),
-                      // the correct answer
-                      Text('Correct Answer: ${falseAnswer[3]}', style: const TextStyle(
-                        color: Colors.white
-                      )),
-                    ],
+          falseAnswers.isNotEmpty
+              ? Positioned(
+                  top: height * 0.3,
+                  left: width * 0.2,
+                  child: Text(
+                    'Here are the questions you missed',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: width * 0.04,
+                    ),
                   ),
-                );
-              },
-            ),
-          ),
+                )
+              : const SizedBox(),
+          falseAnswers.isEmpty
+              ? Positioned(
+                top: height * 0.5,
+                left : width * 0.25,
+                child: Text(
+                  'Good Job!'
+                  ,style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: width * 0.11,
+                  ),
+                )
+                  )
+              : const SizedBox(),
+          falseAnswers.isNotEmpty
+              ? Padding(
+                  padding: EdgeInsets.only(top: height * 0.4),
+                  child: ListView.builder(
+                    itemCount: falseAnswers.length,
+                    itemBuilder: (context, index) {
+                      final width = MediaQuery.of(context).size.width;
+                      final falseAnswer = falseAnswers[index];
+                      return Padding(
+                        padding: EdgeInsets.all(width * 0.04),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            // question number
+                            Text(
+                              'Question ${falseAnswer[0]}',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 10),
+                            // question itself
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.05),
+                              child: Text(falseAnswer[1],
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: width * 0.05,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ),
+                            const SizedBox(height: 15),
+                            // the correct answer
+                            Text('Correct Answer: ${falseAnswer[2]}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: width * 0.04,
+                                )),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
+              : const SizedBox(),
         ],
       )),
     );
