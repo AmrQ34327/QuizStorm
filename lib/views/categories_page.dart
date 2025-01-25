@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:myapp/main.dart';
 import 'package:myapp/model/model.dart';
+import 'package:myapp/views/questions_page.dart';
 
 class CategoriesPage extends StatelessWidget {
   const CategoriesPage({super.key});
@@ -35,7 +38,9 @@ class CategoriesPage extends StatelessWidget {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Get.off(
+                        () => const MyHomePage(),
+                      );
                     },
                     label: Icon(FontAwesomeIcons.arrowLeft,
                         size: width * 0.05, color: Colors.white),
@@ -60,7 +65,7 @@ class CategoriesPage extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         // opens questions page
-                        Navigator.pushNamed(context, '/questions', arguments: category.categoryIDNumber);
+                        Get.to(() => QuestionsPage(), arguments: category.categoryIDNumber);
                       },
                       child: CategoryCard(
                         imagePath: category.imagePath,
@@ -100,7 +105,7 @@ class CategoryCard extends StatelessWidget {
       color: backgroundColor ?? Colors.white,
       elevation: 5,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0), // make it adaptive
+        borderRadius: BorderRadius.circular(16.0), 
       ),
       child: Padding(
         padding: const EdgeInsets.all(6.0),

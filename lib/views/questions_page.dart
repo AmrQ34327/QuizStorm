@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:myapp/model/model.dart';
 import 'dart:convert';
 import 'package:just_audio/just_audio.dart';
+import 'package:get/get.dart';
+import 'package:myapp/views/score_page.dart';
 
 class QuestionsPage extends StatefulWidget {
   QuestionsPage({super.key});
@@ -18,7 +20,6 @@ class _QuestionsPageState extends State<QuestionsPage> {
   int questionsCount = 1;
   late String question;
   int finalScore = 0;
-  Color _backgroundColor = Colors.white;
   Color correctAnswerBackgroundColor = Colors.green;
   List<List> falseAnswers = [];
 
@@ -129,11 +130,17 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                         () {
                                       setState(() {
                                         if (questionsCount == 10) {
-                                          Navigator.pushReplacementNamed(
-                                              context, '/score', arguments: [
-                                            falseAnswers,
-                                            finalScore
-                                          ]);
+                                          Get.off(
+                                            () => const ScorePage(),
+                                            arguments: [
+                                              falseAnswers,
+                                              finalScore
+                                            ],
+                                            transition:
+                                                Transition.circularReveal,
+                                            duration:
+                                                const Duration(seconds: 2),
+                                          );
                                         } else {
                                           changeAnswers(questionsCount);
                                         }
@@ -141,7 +148,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                     });
                                   } else if (answer != correctAnswer) {
                                     // add it to a list above called false answers
-                                    // list has question no. , question, chosen answer , correct answer
+                                    // list has question no. , question, correct answer
                                     falseAnswers.add([
                                       questionsCount.toString(),
                                       utf8.decode(base64Decode(
@@ -151,11 +158,12 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                     ]);
                                     setState(() {
                                       if (questionsCount == 10) {
-                                        Navigator.pushReplacementNamed(
-                                            context, '/score', arguments: [
-                                          falseAnswers,
-                                          finalScore
-                                        ]);
+                                        Get.off(
+                                          () => const ScorePage(),
+                                          arguments: [falseAnswers, finalScore],
+                                          transition: Transition.circularReveal,
+                                          duration: const Duration(seconds: 2),
+                                        );
                                       }
                                       if (questionsCount < 10) {
                                         changeAnswers(questionsCount);
@@ -177,6 +185,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         'assets/cool-background2.png',
                         fit: BoxFit.cover,
                         width: double.infinity,
+                        height: double.infinity,
                       ),
                       const Center(
                         child: CircularProgressIndicator(
@@ -192,7 +201,28 @@ class _QuestionsPageState extends State<QuestionsPage> {
                                 Navigator.pop(context);
                               },
                               icon: const Icon(Icons.arrow_back_ios,
-                                  color: Colors.white)))
+                                  color: Colors.white))),
+                      Positioned(
+                          bottom: height * 0.3,
+                          left: width * 0.13,
+                          child: FutureBuilder(
+                              future:
+                                  Future.delayed(const Duration(seconds: 8)),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(13.0),
+                                    child: Text(
+                                        'The Game needs Internet Connection \n',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width * 0.04)),
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              }))
                     ],
                   ),
                 )),
