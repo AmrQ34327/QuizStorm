@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:myapp/views/categories_page.dart';
+
 
 class ScorePage extends StatefulWidget {
   const ScorePage({super.key});
@@ -12,7 +15,6 @@ class _ScorePageState extends State<ScorePage> {
   late final List falseAnswers;
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     final passedList = ModalRoute.of(context)!.settings.arguments as List;
     falseAnswers = passedList[0];
@@ -39,7 +41,11 @@ class _ScorePageState extends State<ScorePage> {
               left: 5,
               child: IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Get.off(()=>  const CategoriesPage(),
+                    transition: Transition.fade,
+                    duration: const Duration(seconds: 1),
+                    );
+                    
                   },
                   icon: const Icon(Icons.arrow_back_ios, color: Colors.white))),
           Positioned(
